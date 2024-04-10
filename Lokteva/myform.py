@@ -23,7 +23,7 @@ def my_form():
     if not re.match(r"^[\w]{3,20}$", username):
         return "Please enter a correct name"
     
-    if not re.match(r".{4,}", quest) or quest.isdigit() or not any(char.isalnum() for char in quest):
+    if not re.match(r".{4,}", quest) or quest.isdigit() or not any(char.isalpha() or char.isspace() for char in quest):
         return "Please enter a longer question (3 characters or more), check that the question consists of more than just numbers"
     
     # Получаем текущую дату
