@@ -28,27 +28,30 @@ def my_form():
     
     # Получаем текущую дату
     current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+    questions = {mail, quest}
+    pdb.set_trace()
     
-    save_question(mail, username, quest)
+    save_question(mail, username, quest)    
     
     # Возвращаем сообщение с данными пользователя
     return "Thanks, %s! The answer will be sent to the mail %s. Access Date: %s" % (username, mail, current_date)
 
-questions = {}
 
 # Запись вопроса в JSON файлы
 def save_question(mail, username, quest):
     with open('questions.json', 'r', encoding='utf-8') as f:
         try:
-            data = json.load(f)
+            questions = json.load(f)
         except json.JSONDecodeError:
-            data = {}
+            questions = {}
 
-    if mail in data:
-        if quest not in data[mail][1]:
-            data[mail][1].append(quest)
+    if mail in questions:
+        if quest not in questions[mail][1]:
+            questions[mail][1].append(quest)
     else:
-        data[mail] = [username, [quest]]
+        questions[mail] = [username, [quest]]
 
     with open('questions.json', 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+        json.dump(questions, f, ensure_ascii=False, indent=4)
+    
+    
