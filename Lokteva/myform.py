@@ -51,7 +51,6 @@ def save_question(mail, username, quest):
 
     with open('questions.json', 'w', encoding='utf-8') as f:
         json.dump(questions, f, ensure_ascii=False, indent=4)
-        
-    pdb.set_trace()
+
     
     
