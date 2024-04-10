@@ -1,12 +1,15 @@
 import re
 from bottle import post, request
 import datetime
+import pdb
+import json
 
 @post('/home', method='post')
 def my_form():
     # Получаем значения из формы
     mail = request.forms.get('ADRESS')
     username = request.forms.get('USERNAME')
+    quest = request.forms.get('QUEST')
     
     # Проверяем заполнены ли все поля
     if not mail or not username:
@@ -20,8 +23,32 @@ def my_form():
     if not re.match(r"^[\w]{3,20}$", username):
         return "Please enter a correct name"
     
+    if not re.match(r".{4,}", quest) or quest.isdigit() or not any(char.isalnum() for char in quest):
+        return "Please enter a longer question (3 characters or more), check that the question consists of more than just numbers"
+    
     # Получаем текущую дату
     current_date = datetime.datetime.now().strftime("%Y-%m-%d")
     
+    save_question(mail, username, quest)
+    
     # Возвращаем сообщение с данными пользователя
     return "Thanks, %s! The answer will be sent to the mail %s. Access Date: %s" % (username, mail, current_date)
+
+questions = {}
+
+# Запись вопроса в JSON файлы
+def save_question(mail, username, quest):
+    with open('questions.json', 'r', encoding='utf-8') as f:
+        try:
+            data = json.load(f)
+        except json.JSONDecodeError:
+            data = {}
+
+    if mail in data:
+        if quest not in data[mail][1]:
+            data[mail][1].append(quest)
+    else:
+        data[mail] = [username, [quest]]
+
+    with open('questions.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
