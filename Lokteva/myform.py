@@ -28,8 +28,6 @@ def my_form():
     
     # Получаем текущую дату
     current_date = datetime.datetime.now().strftime("%Y-%m-%d")
-    questions = {mail, quest}
-    pdb.set_trace()
     
     save_question(mail, username, quest)    
     
@@ -53,5 +51,7 @@ def save_question(mail, username, quest):
 
     with open('questions.json', 'w', encoding='utf-8') as f:
         json.dump(questions, f, ensure_ascii=False, indent=4)
+        
+    pdb.set_trace()
     
     
