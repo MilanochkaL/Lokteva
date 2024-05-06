@@ -16,7 +16,7 @@ def my_form():
         return "Please fill in all fields"
     
     # Проверяем правильность формата email
-    if not re.match(r"^[^\W^_]{1}[^@]{1,16}@[A-Za-z]{1,7}(?:.[A-Za-z]{2,3}){1,3}$", mail):
+    if not check_email_d(mail):
         return "Please enter a valid email address"
     
     # Проверяем длину имени пользователя
@@ -51,6 +51,8 @@ def save_question(mail, username, quest):
 
     with open('questions.json', 'w', encoding='utf-8') as f:
         json.dump(questions, f, ensure_ascii=False, indent=4)
-
-    
-    
+ 
+def check_email_d(mail):
+    if not re.match(r"^[^\W^_]{1}[^@]{1,16}@[A-Za-z]{1,7}(?:.[A-Za-z]{2,3}){1,3}$", mail):
+        return False
+    return True   
